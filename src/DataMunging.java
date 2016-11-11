@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataMunging {
-    private RowSelector rowSelector;
+    private Parser parser;
     private final Indexes indexes;
 
-    public DataMunging(RowSelector rowSelector,Indexes indexes) {
-        this.rowSelector = rowSelector;
+    public DataMunging(Parser rowSelector,Indexes indexes) {
+        this.parser = rowSelector;
         this.indexes = indexes;
     }
 
     public Object[] smallest(String pathfile, Type type) throws FileNotFoundException {
-        ArrayList<String[]> parsed = parse(pathfile);
+        ArrayList<String[]> parsed = parser.parseTable(pathfile);
         ArrayList<FilteredData> dataList = new ArrayList<>();
         for (String[] row : parsed) {
             FilteredData data = FilteredData.generateData(row, indexes,type);
@@ -22,23 +22,6 @@ public class DataMunging {
         }
         
         return FilteredData.mins(dataList);
-    }
-
-    private ArrayList<String[]> parse(String pathfile) throws FileNotFoundException { //, int getCol, int max, int min
-        ArrayList<String[]> rows = new ArrayList<>();
-        Scanner scan = new Scanner(new File(pathfile));
-        String row;
-
-        while (scan.hasNext()) {
-            row = scan.nextLine();
-            String []parsedRow;
-            try {
-                parsedRow = rowSelector.getRow(row);
-                for (String col : parsedRow) {System.out.println(col);}
-                rows.add(parsedRow);
-            } catch (RowNoValidException ex) {}
-        }
-        return rows;
     }
     
 }

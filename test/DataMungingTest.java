@@ -40,7 +40,7 @@ public class DataMungingTest {
 
     @Test
     public void weatherTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector(" \t\r\n\\*");
+        Parser rowSelector = new Parser(" \t\r\n\\*");
         Indexes indexes = new Indexes(1,2,3);
         Type IntegerType = new IntegerType();
         DataMunging dm = new DataMunging(rowSelector,indexes);
@@ -51,7 +51,7 @@ public class DataMungingTest {
     
     @Test
     public void footballTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
+        Parser rowSelector = new Parser(" \t\r\n\\.-");
         Indexes indexes = new Indexes(2,7,8);
         Type StringType = new StringType();
         DataMunging dm = new DataMunging(rowSelector,indexes);
@@ -62,7 +62,7 @@ public class DataMungingTest {
     
     @Test
     public void multipleMinTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
+        Parser rowSelector = new Parser(" \t\r\n\\.-");
         Indexes indexes = new Indexes(2,7,8);
         Type StringType = new StringType();
         DataMunging dm = new DataMunging(rowSelector,indexes);
@@ -83,15 +83,23 @@ public class DataMungingTest {
     
     @Test
     public void emptyFileTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
+        Parser rowSelector = new Parser(" \t\r\n\\.-");
         Indexes indexes = new Indexes(2,7,8);
         Type StringType = new StringType();
         DataMunging dm = new DataMunging(rowSelector,indexes);
         
-        System.out.println("-------------football 2-------------");
-        ArrayList<String> teams = new ArrayList<>();
         Object teamsArr[] = dm.smallest("vacio.dat",StringType);
         
         assertTrue(teamsArr.length==0);
+    }
+    
+    @Test(expected = FileNotFoundException.class)
+    public void FileNotFoundTest() throws FileNotFoundException{
+        Parser rowSelector = new Parser(" \t\r\n\\.-");
+        Indexes indexes = new Indexes(2,7,8);
+        Type StringType = new StringType();
+        DataMunging dm = new DataMunging(rowSelector,indexes);
+        
+        Object teamsArr[] = dm.smallest("NotFound.dat",StringType);
     }
 }
