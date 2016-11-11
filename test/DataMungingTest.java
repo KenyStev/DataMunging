@@ -40,18 +40,22 @@ public class DataMungingTest {
     @Test
     public void weatherTest() throws FileNotFoundException{
         RowSelector rowSelector = new RowSelector(" \t\r\n\\*");
-        DataMunging dm = new DataMunging(rowSelector);
+        Indexes indexes = new Indexes(1,2,3);
+        Type IntegerType = new IntegerType();
+        DataMunging dm = new DataMunging(rowSelector,indexes);
         
         System.out.println("-------------weather-------------");
-        assertArrayEquals(new Object[]{14}, dm.weather("weather.dat"));
+        assertArrayEquals(new Object[]{14}, dm.smallest("weather.dat",IntegerType));
     }
     
     @Test
     public void footballTest() throws FileNotFoundException{
         RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
-        DataMunging dm = new DataMunging(rowSelector);
+        Indexes indexes = new Indexes(2,7,8);
+        Type StringType = new StringType();
+        DataMunging dm = new DataMunging(rowSelector,indexes);
         
         System.out.println("-------------football-------------");
-        assertArrayEquals(new Object[]{2}, dm.football("football.dat"));
+        assertArrayEquals(new Object[]{"Leicester"}, dm.smallest("football.dat",StringType));
     }
 }
