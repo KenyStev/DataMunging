@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Parser {
 
-    private String delimiters;
+    private final String delimiters;
 
     public Parser(String delimiters) {
         this.delimiters=delimiters;
@@ -33,9 +33,7 @@ public class Parser {
         String []parsedRow = row.split("["+delimiters+"]+");
         try {
             Integer.parseInt(parsedRow[1]);
-        } catch (NumberFormatException e) {
-            throw new RowNoValidException(row);
-        }catch(ArrayIndexOutOfBoundsException e){
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             throw new RowNoValidException(row);
         }
         return parsedRow;
