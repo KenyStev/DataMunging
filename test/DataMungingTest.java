@@ -5,6 +5,7 @@
  */
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -57,5 +58,40 @@ public class DataMungingTest {
         
         System.out.println("-------------football-------------");
         assertArrayEquals(new Object[]{"Leicester"}, dm.smallest("football.dat",StringType));
+    }
+    
+    @Test
+    public void multipleMinTest() throws FileNotFoundException{
+        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
+        Indexes indexes = new Indexes(2,7,8);
+        Type StringType = new StringType();
+        DataMunging dm = new DataMunging(rowSelector,indexes);
+        
+        System.out.println("-------------football 2-------------");
+        ArrayList<String> teams = new ArrayList<>();
+        Object teamsArr[] = dm.smallest("football2.dat",StringType);
+        Object expectedTeams[] = {"Leicester","Arko","Locky","Tuster","Marrok"};
+        
+        assertTrue(expectedTeams.length == teamsArr.length);
+        for (Object team : expectedTeams) {
+            teams.add((String) team);
+        }
+        for (Object team : teamsArr) {
+            assertTrue(teams.contains(team));
+        }
+    }
+    
+    @Test
+    public void emptyFileTest() throws FileNotFoundException{
+        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
+        Indexes indexes = new Indexes(2,7,8);
+        Type StringType = new StringType();
+        DataMunging dm = new DataMunging(rowSelector,indexes);
+        
+        System.out.println("-------------football 2-------------");
+        ArrayList<String> teams = new ArrayList<>();
+        Object teamsArr[] = dm.smallest("vacio.dat",StringType);
+        
+        assertTrue(teamsArr.length==0);
     }
 }

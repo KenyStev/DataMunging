@@ -25,9 +25,9 @@ public class FilteredData implements Comparable<FilteredData>{
         
         ArrayList<Object> mins = new ArrayList<>();
         
-        for (FilteredData day : data) {
-            if(data.get(0).colDay.equals(day.colDay))
-                mins.add(day.colDay);
+        for (FilteredData dat : data) {
+            if(data.get(0).diference==dat.diference)
+                mins.add(dat.colDay);
         }
         return mins.toArray();
     }
