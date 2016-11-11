@@ -39,21 +39,19 @@ public class DataMungingTest {
 
     @Test
     public void weatherTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector();
+        RowSelector rowSelector = new RowSelector(" \t\r\n\\*");
         DataMunging dm = new DataMunging(rowSelector);
         
         System.out.println("-------------weather-------------");
-        dm.setDelimiters(" \t\r\n\\*");
-        assertArrayEquals(new int[]{2}, dm.weather("weather.dat"));
+        assertArrayEquals(new Object[]{14}, dm.weather("weather.dat"));
     }
     
     @Test
     public void footballTest() throws FileNotFoundException{
-        RowSelector rowSelector = new RowSelector();
+        RowSelector rowSelector = new RowSelector(" \t\r\n\\.-");
         DataMunging dm = new DataMunging(rowSelector);
         
         System.out.println("-------------football-------------");
-        dm.setDelimiters(" \t\r\n\\.-");
-        assertArrayEquals(new int[]{2}, dm.weather("football.dat"));
+        assertArrayEquals(new Object[]{2}, dm.football("football.dat"));
     }
 }

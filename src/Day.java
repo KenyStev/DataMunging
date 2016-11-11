@@ -1,17 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+public class Day implements Comparable<Day>{
 
-/**
- *
- * @author kenystev
- */
-public class Day {
+    public final int colDay;
+    public final int diference;
+    
+    public static Day generateDay(String[] parsedRow, int colVal, int max, int min) {
+        int dif = Integer.parseInt(parsedRow[max]) - Integer.parseInt(parsedRow[min]);
+        return new Day(Integer.parseInt(parsedRow[colVal]),dif);
+    }
 
-    static Day generateDay(String line, int col, int max, int min) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Day(int colDay, int diff) {
+        this.colDay=colDay;
+        this.diference=diff;
+    }
+
+    @Override
+    public int compareTo(Day o) {
+        return (diference<o.diference)?-1:(diference==o.diference)?0:1;
     }
     
 }

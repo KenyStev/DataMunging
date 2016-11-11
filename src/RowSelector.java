@@ -10,8 +10,22 @@
  */
 public class RowSelector {
 
-    boolean isRowValid(String line) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private String delimiters;
+
+    public RowSelector(String delimiters) {
+        this.delimiters=delimiters;
+    }
+
+    public String[] getRow(String row) throws RowNoValidException {
+        String []parsedRow = row.split("["+delimiters+"]+");
+        try {
+            Integer.parseInt(parsedRow[1]);
+        } catch (NumberFormatException e) {
+            throw new RowNoValidException(row);
+        }catch(ArrayIndexOutOfBoundsException e){
+            throw new RowNoValidException(row);
+        }
+        return parsedRow;
     }
     
 }

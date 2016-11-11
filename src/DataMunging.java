@@ -1,13 +1,9 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Array;
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
-import java.util.TreeSet;
-import sun.reflect.generics.tree.Tree;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,52 +17,43 @@ import sun.reflect.generics.tree.Tree;
  */
 public class DataMunging {
     RowSelector rowSelector;
-    private String delimiters;
 
     public DataMunging(RowSelector rowSelector) {
-        this.delimiters = " ";
         this.rowSelector = rowSelector;
     }
-    
-    void setDelimiters(String deliliters) {
-        this.delimiters = delimiters;
-    }
 
-    public int[] weather(String pathfile) throws FileNotFoundException {
+    public Object[] weather(String pathfile) throws FileNotFoundException {
         return parse(pathfile,1,2,3);
     }
 
-    private int[] parse(String pathfile, int getCol, int max, int min) throws FileNotFoundException {
+    private Object[] parse(String pathfile, int getCol, int max, int min) throws FileNotFoundException {
         Scanner scan = new Scanner(new File(pathfile));
         String row;
-        TreeSet<Day> days = new TreeSet<>();
+        ArrayList<Day> days = new ArrayList<>();
         while (scan.hasNext()) {
             row = scan.nextLine();
-            String []parsedRow = row.split("["+delimiters+"]+");
+            String []parsedRow;
             try {
-                Integer.parseInt(parsedRow[1]);
-            } catch (NumberFormatException e) {
-                continue;
-            }catch(ArrayIndexOutOfBoundsException e){
-                continue;
-            }
-            for (String col : parsedRow) {
-                System.out.println(col);
-            }
-            if(rowSelector.isRowValid(row)){
-                Day day = Day.generateDay(row,getCol,max,min);
+                parsedRow = rowSelector.getRow(row);
+                for (String col : parsedRow) {
+                    System.out.println(col);
+                }
+                Day day = Day.generateDay(parsedRow,getCol,max,min);
                 days.add(day);
-            }
+            } catch (RowNoValidException ex) {}
         }
+        Collections.sort(days);
+        ArrayList<Integer> dayNums = new ArrayList<>();
         
-        
-        return new int[]{2};
+        for (Day day : days) {
+            if(days.get(0).colDay==day.colDay)
+                dayNums.add(day.colDay);
+        }
+        return dayNums.toArray();
     }
-    
-    public static void main(String[] args) throws FileNotFoundException {
-        DataMunging dm = new DataMunging(null);
-//        dm.parse("weather.dat", 1, 2, 3);
-        dm.parse("football.dat", 1, 2, 3);
+
+    public Object[] football(String footballdat) throws FileNotFoundException {
+        return parse(footballdat, 2, 0, 0);
     }
     
 }
