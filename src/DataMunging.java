@@ -24,11 +24,4 @@ public class DataMunging {
         
         return FilteredData.mins(dataList);
     }
-    
-    public static void main(String[] args) {
-        
-        
-        System.out.println(Pattern.quote(" .-"));
-    }
-    
 }
